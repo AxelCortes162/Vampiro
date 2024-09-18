@@ -8,6 +8,9 @@ TagManager:
   - Vampiro
   - Fire
   - Estatua
+  - RoomLight
+  - SamplesInfoPanel
+  - Cuervo
   layers:
   - Default
   - TransparentFX
