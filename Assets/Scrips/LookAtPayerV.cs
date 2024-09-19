@@ -7,6 +7,7 @@ public class LookAtPlayerV : MonoBehaviour
     public Transform player; // Referencia al transform del jugador
     public float delay = 55.0f; // Tiempo de espera en segundos
     public NavMeshAgent navMeshAgent; // Referencia al NavMeshAgent que está desactivado
+    public AudioSource audioSource; // Referencia al componente de audio
 
     private bool shouldRotate = false;
 
@@ -19,6 +20,12 @@ public class LookAtPlayerV : MonoBehaviour
         if (navMeshAgent != null)
         {
             navMeshAgent.enabled = false;
+        }
+
+        // Desactivar el audio source al principio
+        if (audioSource != null)
+        {
+            audioSource.enabled = false; // Desactivar el audio source
         }
     }
 
@@ -52,5 +59,12 @@ public class LookAtPlayerV : MonoBehaviour
         {
             navMeshAgent.enabled = true;
         }
+
+        // Activar el audio source después del tiempo de espera
+        if (audioSource != null)
+        {
+            audioSource.enabled = true; // Activar el audio source
+            audioSource.Play(); // Reproducir el audio
+        }
     }
-}
+}    

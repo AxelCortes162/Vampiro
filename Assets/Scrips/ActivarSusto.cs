@@ -6,6 +6,7 @@ public class ActivarSusto : MonoBehaviour
     public GameObject esfera; // Referencia a la esfera que se activará y desactivará
     public Collider triggerCollider; // El collider que se desactivará al final
     public GameObject estatua; // Asigna la estatua desactivada desde el Inspector
+    public GameObject vampiroComiendo;
     public SustosManager sustosManager; // Referencia al script controlador de los sustos
     public GameObject vampiro; // Asigna el vampiro desde el inspector
 
@@ -61,6 +62,10 @@ public class ActivarSusto : MonoBehaviour
         if (estatua != null)
         {
             estatua.SetActive(true);
+        }
+        if (vampiroComiendo != null)
+        {
+            vampiroComiendo.SetActive(true);
         }
 
         // 6. Desactivar la esfera
