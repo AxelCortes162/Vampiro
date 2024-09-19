@@ -2089,7 +2089,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sustoAnimator: {fileID: 451497070}
   triggerCollider: {fileID: 319398476}
-  player: {fileID: 712423090}
+  player: {fileID: 284852122}
   personaje: {fileID: 451497068}
   rotationSpeed: 5
   tiempoParaDestruir: 19
@@ -4469,12 +4469,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2a4339fd08e4a774f907817c85495b3b,
     type: 3}
   m_PrefabInstance: {fileID: 1178476509}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &712423090 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36,
-    type: 3}
-  m_PrefabInstance: {fileID: 1581955103}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &722593308 stripped
 GameObject:
@@ -11084,7 +11078,7 @@ PrefabInstance:
     - target: {fileID: 4459864850019384750, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4459864851310106424, guid: 6bacecc4f3df9584198879c73a6b6c36,
         type: 3}
@@ -14978,7 +14972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100012, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_TagString
