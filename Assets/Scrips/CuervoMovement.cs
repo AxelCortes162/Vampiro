@@ -6,7 +6,7 @@ public class CuervoMovement : MonoBehaviour
     public Transform player; // Asigna el transform del jugador desde el Inspector
     public float speed = 5f; // Velocidad de movimiento del cuervo
     private Animator animator;
-    private bool isFlying = false;
+    
     private AudioSource audioSource;
 
     void Start()
@@ -15,29 +15,37 @@ public class CuervoMovement : MonoBehaviour
         audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
     }
 
-    void Update()
-    {
-        if (isFlying)
-        {
-            // Mover el cuervo hacia el jugador
-            Vector3 direction = (player.position - transform.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
-        }
-    }
-
     public void StartFlying()
+{
+    if (audioSource != null)
     {
-        isFlying = true;
-        if (audioSource != null)
-        {
-            audioSource.Play(); // Reproducir el audio
-        }
-        StartCoroutine(DestroyAfterTime(4f)); // Iniciar la corrutina para destruir el cuervo después de 5 segundos
+        audioSource.Play(); // Reproducir el audio
     }
+    
+    // Esperar un poco antes de iniciar la animación de vuelo
+    Invoke(nameof(StartFlyingAnimation), 0.5f);
+}
 
-    private IEnumerator DestroyAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject); // Destruir el cuervo
-    }
+private void StartFlyingAnimation()
+{
+    animator.SetBool("Volar0", true); // Iniciar la animación de vuelo
+    
+    // Esperar un poco más antes de mover el cuervo hacia el jugador
+    Invoke(nameof(StartMoving), 0.5f);
+}
+
+private void StartMoving()
+{
+    // Mover el cuervo hacia adelante
+    Vector3 direction = transform.forward;
+    transform.position += direction * speed * Time.deltaTime;
+
+    StartCoroutine(DestroyAfterTime(4f));
+}
+
+private IEnumerator DestroyAfterTime(float time)
+{
+    yield return new WaitForSeconds(time);
+    Destroy(gameObject);
+}
 }

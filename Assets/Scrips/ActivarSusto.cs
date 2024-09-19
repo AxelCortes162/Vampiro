@@ -1,109 +1,78 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; // Necesario para acceder a los componentes UI
-
 
 public class ActivarSusto : MonoBehaviour
 {
-    public Image fadeImage; // El componente Image que controlará el desvanecimiento
+    public GameObject esfera; // Referencia a la esfera que se activará y desactivará
     public Collider triggerCollider; // El collider que se desactivará al final
     public GameObject estatua; // Asigna la estatua desactivada desde el Inspector
+    public SustosManager sustosManager; // Referencia al script controlador de los sustos
+    public GameObject vampiro; // Asigna el vampiro desde el inspector
 
-    // Método que se llama cuando otro objeto entra en el trigger del collider
     private void OnTriggerEnter(Collider other)
     {
-        // Verifica si el objeto que entra en el collider es el Player (Character Controller) con el tag "Player"
+        // Verifica si el objeto que entra en el trigger es el Player
         if (other.CompareTag("Player"))
         {
-            // Busca el prefab con el tag "Vampiro"
-            GameObject vampiro = GameObject.FindGameObjectWithTag("Vampiro");
-
-            if (vampiro != null)
-            {
-                // Activar el Animator
-                Animator vampiroAnimator = vampiro.GetComponent<Animator>();
-                if (vampiroAnimator != null)
-                {
-                    vampiroAnimator.enabled = true; // Activa el Animator
-                }
-
-                // Activar el AudioSource
-                AudioSource vampiroAudio = vampiro.GetComponent<AudioSource>();
-                if (vampiroAudio != null)
-                {
-                    vampiroAudio.enabled = true; // Activa el AudioSource si estaba desactivado
-
-                    // Reproduce el sonido
-                    vampiroAudio.Play();
-                }
-
-                // Inicia el proceso de susto
-                StartCoroutine(SustoSequence(vampiro));
-            }
+            // Inicia el proceso de susto
+            StartCoroutine(SustoSequence());
         }
     }
 
-    // Coroutine para manejar toda la secuencia
-    private IEnumerator SustoSequence(GameObject vampiro)
+    // Coroutine para manejar toda la secuencia del susto
+    private IEnumerator SustoSequence()
     {
-        // Esperar 1 segundo antes de activar el panel negro
-        yield return new WaitForSeconds(1.5f);
-
-        // Activar el panel negro y hacer que se desvanezca a negro
-        fadeImage.gameObject.SetActive(true);
-        StartCoroutine(FadeToBlack());
-
-        // Esperar 1 segundo con la pantalla en negro
-        yield return new WaitForSeconds(2.0f);
-
-        // Desactivar el vampiro y activar la estatua
-        vampiro.SetActive(false);
-        if (estatua != null)
-        {
-            estatua.SetActive(true); // Activar la estatua
-        }
-
-        // Empezar a desvanecer el panel negro de regreso a transparente
-        StartCoroutine(FadeToClear());
-    }
-
-    // Coroutine para oscurecer la pantalla cambiando la transparencia del color del Image
-    private IEnumerator FadeToBlack()
-    {
-        float duration = 0.5f; // Duración del efecto de desvanecimiento
-        float currentTime = 0f;
-
-        Color originalColor = fadeImage.color;
-        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 1f); // Alpha a 1 (negro)
-
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            fadeImage.color = Color.Lerp(originalColor, targetColor, currentTime / duration); // Oscurece gradualmente
-            yield return null;
-        }
-    }
-
-    // Coroutine para desvanecer el panel negro a transparente
-    private IEnumerator FadeToClear()
-    {
-        float duration = 3.0f; // Duración del efecto de desvanecimiento
-        float currentTime = 0f;
-
-        Color originalColor = fadeImage.color;
-        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f); // Alpha a 0 (transparente)
-
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            fadeImage.color = Color.Lerp(originalColor, targetColor, currentTime / duration); // Aclarar gradualmente
-            yield return null;
-        }
-
-        // Cuando el fade termina, desactiva el collider para evitar que el susto se repita
+        // Desactiva el collider para que no se vuelva a activar
         if (triggerCollider != null)
         {
             triggerCollider.enabled = false;
         }
+
+        // 1. Activar el sonido del vampiro
+        if (vampiro != null)
+        {
+            AudioSource vampiroAudio = vampiro.GetComponent<AudioSource>();
+            if (vampiroAudio != null)
+            {
+                vampiroAudio.enabled = true; // Activa el AudioSource si estaba desactivado
+                vampiroAudio.Play(); // Reproduce el sonido
+            }
+
+            // 2. Activar la animación del vampiro
+            Animator vampiroAnimator = vampiro.GetComponent<Animator>();
+            if (vampiroAnimator != null)
+            {
+                vampiroAnimator.SetTrigger("Susto"); // Activar animación del susto
+            }
+        }
+
+        // 3. Esperar 1.5 segundos antes de activar la esfera
+        yield return new WaitForSeconds(1.5f);
+        esfera.SetActive(true);
+
+        // 4. Esperar 2 segundos con la esfera activa
+        yield return new WaitForSeconds(2.0f);
+
+        // 5. Desactivar el vampiro y activar la estatua
+        if (vampiro != null)
+        {
+            vampiro.SetActive(false);
+        }
+        if (estatua != null)
+        {
+            estatua.SetActive(true);
+        }
+
+        // 6. Desactivar la esfera
+        esfera.SetActive(false);
+
+        // 7. Notificar al SustosManager para activar el siguiente susto
+        if (sustosManager != null)
+        {
+            sustosManager.ActivarSiguienteSusto();
+        }
+
+        // Finalmente, destruir este susto después de que se complete
+        Destroy(gameObject);
     }
 }
