@@ -9,6 +9,8 @@ public class ActivarSusto : MonoBehaviour
     public GameObject vampiroComiendo;
     public SustosManager sustosManager; // Referencia al script controlador de los sustos
     public GameObject vampiro; // Asigna el vampiro desde el inspector
+    public GameObject tumba;
+    public GameObject camino;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -66,6 +68,14 @@ public class ActivarSusto : MonoBehaviour
         if (vampiroComiendo != null)
         {
             vampiroComiendo.SetActive(true);
+        }
+        if (camino != null)
+        {
+            camino.SetActive(true);
+        }
+        if(tumba != null)
+        {
+            tumba.SetActive(false);
         }
 
         // 6. Desactivar la esfera
