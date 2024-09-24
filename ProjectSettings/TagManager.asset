@@ -11,6 +11,7 @@ TagManager:
   - RoomLight
   - SamplesInfoPanel
   - Cuervo
+  - Murcielagos
   layers:
   - Default
   - TransparentFX

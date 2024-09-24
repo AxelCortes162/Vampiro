@@ -9,6 +9,7 @@ public class ActivarSusto3 : MonoBehaviour
     public Transform personaje; // Referencia al personaje que te mirará
     public float rotationSpeed = 2.0f; // Velocidad con la que el personaje te mira
     public float tiempoParaDestruir = 22.0f; // Tiempo que el personaje espera antes de destruirse
+    public GameObject aura;
 
     public AudioSource audio1; // AudioSource para el audio inicial (antes del susto)
     public AudioSource audio2; // AudioSource para el audio que se reproduce 4 segundos después del susto
@@ -83,6 +84,11 @@ public class ActivarSusto3 : MonoBehaviour
         if (personaje != null)
         {
             Destroy(personaje.gameObject);
+        }
+
+        if(aura != null)
+        {
+            aura.SetActive(true);
         }
     }
 

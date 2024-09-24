@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ActivarSusto4 : MonoBehaviour
 {
-    public Animator sustoAnimator; // Referencia al Animator que controlará la animación del susto
     public Collider triggerCollider; // Collider que activará el susto al ser atravesado
     public GameObject personaje; // El personaje que empezará desactivado
     public float tiempoParaDestruir = 20.0f; // Tiempo que el personaje esperará antes de destruirse
@@ -17,11 +16,6 @@ public class ActivarSusto4 : MonoBehaviour
         // Verifica si el objeto que entra en el collider es el Player (Character Controller) con el tag "Player"
         if (other.CompareTag("Player") && !personajeActivado)
         {
-            // Activar el trigger "Susto4" en el Animator
-            if (sustoAnimator != null)
-            {
-                sustoAnimator.SetTrigger("Susto4");
-            }
 
             // Activar el personaje
             if (personaje != null)
@@ -32,12 +26,6 @@ public class ActivarSusto4 : MonoBehaviour
                 // Iniciar la corrutina para destruir el personaje después de un tiempo
                 StartCoroutine(DestruirPersonajeDespuesDeTiempo());
             }
-
-            // Desactivar el collider para que no se repita el susto
-            if (triggerCollider != null)
-            {
-                triggerCollider.enabled = false;
-            }
         }
     }
 
@@ -47,6 +35,10 @@ public class ActivarSusto4 : MonoBehaviour
         // Espera el tiempo especificado antes de destruir el personaje
         yield return new WaitForSeconds(tiempoParaDestruir);
 
+        if (triggerCollider != null)
+        {
+            triggerCollider.enabled = false;
+        }
         // Destruir el personaje
         if (personaje != null)
         {
