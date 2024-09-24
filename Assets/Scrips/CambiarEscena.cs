@@ -34,5 +34,7 @@ public class CambiarEscena : MonoBehaviour
         {
             escena1.SetActive(false);
         }  
+
+        Destroy(gameObject);
     }
 }
